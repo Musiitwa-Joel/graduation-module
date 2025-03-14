@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -43,6 +43,8 @@ import {
 } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useQuery } from "@apollo/client";
+import { LOAD_GRADUATION_DATA } from "@/gql/queries";
 
 export default function Dashboard() {
   const { toast } = useToast();
@@ -51,6 +53,38 @@ export default function Dashboard() {
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [showCardDetails, setShowCardDetails] = useState<string | null>(null);
+  const { data, loading, error } = useQuery(LOAD_GRADUATION_DATA);
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error.message,
+      });
+    }
+  }, [error]);
+
+  // console.log("loading", loading);
+  // console.log("error", error);
+
+  if (loading) {
+    return (
+      <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
+        <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
+          <RefreshCw className="h-10 w-10 text-muted-foreground animate-spin" />
+          <h3 className="mt-4 text-lg font-semibold">
+            Loading graduation data...
+          </h3>
+          <p className="mb-4 mt-2 text-sm text-muted-foreground">
+            Please wait while we fetch the latest information.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // console.log("data", data);
 
   const totalStudents = mockStudents.length;
   const clearedStudents = mockStudents.filter(
@@ -551,7 +585,10 @@ export default function Dashboard() {
             <User className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalStudents}</div>
+            <div className="text-2xl font-bold">
+              {data?.load_graduation_data?.total_eligible_students ||
+                totalStudents}
+            </div>
             <p className="text-xs text-muted-foreground">
               +{Math.floor(Math.random() * 10)}% from last month
             </p>
@@ -568,7 +605,10 @@ export default function Dashboard() {
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{clearedStudents}</div>
+            <div className="text-2xl font-bold">
+              {data?.load_graduation_data?.total_cleared_students ||
+                totalStudents}
+            </div>
             <p className="text-xs text-muted-foreground">
               {Math.round((clearedStudents / totalStudents) * 100)}% of total
               applicants
@@ -1053,7 +1093,7 @@ export default function Dashboard() {
       {/* Card Details Dialog */}
       {showCardDetails && (
         <Dialog open={!!showCardDetails} onOpenChange={closeCardDetails}>
-          <DialogContent className="sm:max-w-[700px]">
+          <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{getCardDetailsContent().title}</DialogTitle>
               <DialogDescription>
