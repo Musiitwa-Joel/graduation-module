@@ -19,6 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { GET_GRADUATION_STUDENTS } from "@/gql/queries";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,6 +58,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { faculties, departments } from "@/data/mockData";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@apollo/client";
 
 export default function StudentManagement() {
   const { students } = useStudents();
@@ -65,6 +68,10 @@ export default function StudentManagement() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { data, loading, error } = useQuery(GET_GRADUATION_STUDENTS);
+  console.log("loading", loading);
+  console.log("error", error);
+  console.log("data", data);
 
   // Filter students based on search and filters
   const filteredStudents = students.filter((student) => {
