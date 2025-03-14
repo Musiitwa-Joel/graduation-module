@@ -72,8 +72,18 @@ const LOAD_ACTIVE_GRADUATION_SESSION = gql`
   }
 `;
 
+const LOAD_GRADUATION_DATA = gql`
+  query load_graduation_data {
+    load_graduation_data {
+      total_eligible_students
+      total_cleared_students
+    }
+  }
+`;
+
 export {
   GET_MY_PROFILE,
   LOAD_GRADUATION_SESSIONS,
   LOAD_ACTIVE_GRADUATION_SESSION,
+  LOAD_GRADUATION_DATA,
 };
