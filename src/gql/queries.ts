@@ -72,11 +72,45 @@ const LOAD_ACTIVE_GRADUATION_SESSION = gql`
   }
 `;
 
+<<<<<<< HEAD
 const LOAD_GRADUATION_DATA = gql`
   query load_graduation_data {
     load_graduation_data {
       total_eligible_students
       total_cleared_students
+=======
+const GET_GRADUATION_STUDENTS = gql`
+  query getGraduationStudents {
+    getGraduationStudents {
+      id
+      biodata {
+        surname
+        other_names
+        email
+        phone_no
+      }
+      student_no
+      course {
+        course_code
+        course_title
+        department {
+          dpt_code
+          school {
+            school_code
+          }
+        }
+      }
+      has_cleared
+    }
+  }
+`;
+
+const LOAD_GRADUATION_DATA = gql`
+  query Load_graduation_data {
+    load_graduation_data {
+      total_cleared_students
+      total_eligible_students
+>>>>>>> 586739e39f1f26e86c2534681f077f90db676479
     }
   }
 `;
@@ -85,5 +119,9 @@ export {
   GET_MY_PROFILE,
   LOAD_GRADUATION_SESSIONS,
   LOAD_ACTIVE_GRADUATION_SESSION,
+<<<<<<< HEAD
+=======
+  GET_GRADUATION_STUDENTS,
+>>>>>>> 586739e39f1f26e86c2534681f077f90db676479
   LOAD_GRADUATION_DATA,
 };
