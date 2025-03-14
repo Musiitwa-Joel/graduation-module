@@ -103,6 +103,10 @@ const LOAD_GRADUATION_DATA = gql`
     load_graduation_data {
       total_cleared_students
       total_eligible_students
+      faculty_breakdown {
+        school_code
+        total_students
+      }
     }
   }
 `;
