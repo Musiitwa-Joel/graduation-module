@@ -72,8 +72,45 @@ const LOAD_ACTIVE_GRADUATION_SESSION = gql`
   }
 `;
 
+const GET_GRADUATION_STUDENTS = gql`
+  query getGraduationStudents {
+    getGraduationStudents {
+      id
+      biodata {
+        surname
+        other_names
+        email
+        phone_no
+      }
+      student_no
+      course {
+        course_code
+        course_title
+        department {
+          dpt_code
+          school {
+            school_code
+          }
+        }
+      }
+      has_cleared
+    }
+  }
+`;
+
+const LOAD_GRADUATION_DATA = gql`
+  query Load_graduation_data {
+    load_graduation_data {
+      total_cleared_students
+      total_eligible_students
+    }
+  }
+`;
+
 export {
   GET_MY_PROFILE,
   LOAD_GRADUATION_SESSIONS,
   LOAD_ACTIVE_GRADUATION_SESSION,
+  GET_GRADUATION_STUDENTS,
+  LOAD_GRADUATION_DATA,
 };

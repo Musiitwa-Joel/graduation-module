@@ -21,7 +21,7 @@ const ApolloSetup = ({ children }) => {
   }));
 
   const httpLink = new HttpLink({
-    uri: "http://localhost:2323/graphql",
+    uri: "http://192.168.1.189:2323/graphql",
   });
 
   const client = new ApolloClient({
